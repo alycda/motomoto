@@ -44,17 +44,26 @@
     + React
         * Tests
 
-- Deploy
+- CI/CD (Deploy)
     + AWS
+        * CodePipeline [3], [4]
         * CloudFormation
             - VPC
                 + Security Groups
-            - EC2
-                + service
-                + nginx
+            - IAM
+            - Lambda [1], [2]
+                - API Gateway
+            - CloudWatch
             - RDS
                 + backup
             - S3
                 + CloudFront
             - Route53
                 + SSL
+
+-------
+
+- [1] https://referbruv.com/blog/posts/creating-aspnet-core-microservices-in-aws-using-sam-and-cloudformation
+- [2] https://docs.aws.amazon.com/lambda/latest/dg/lambda-csharp.html
+- [3] https://aws.amazon.com/quickstart/architecture/dotnet-lambda-cicd/
+- [4] https://aws-quickstart.github.io/quickstart-dotnet-lambda-cicd/
