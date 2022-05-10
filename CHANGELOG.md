@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+
+## 2022-05-10
+### Changed 
+- added `awscli` to Dockerfile
+
 ## 2022-05-09
 ### Changed 
 - `dotnet new react -o motomoto`
