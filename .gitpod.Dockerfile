@@ -7,3 +7,14 @@ FROM gitpod/workspace-dotnet:2022-05-08-14-31-53
 RUN brew install awscli
 
 # RUN aws --version
+
+RUN dotnet new -i Amazon.Lambda.Templates
+RUN dotnet tool install -g Amazon.Lambda.Tools
+RUN export PATH="$PATH:/home/gitpod/.dotnet/tools"
+
+# RUN cat << \EOF >> ~/.bash_profile \
+#   # Add .NET Core SDK tools \
+#   export PATH="$PATH:/home/gitpod/.dotnet/tools" \
+#   EOF \
+
+RUN pip install boto3

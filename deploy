@@ -1,0 +1,82 @@
+#!/usr/bin/python3
+
+import os
+import subprocess
+import asyncio
+import boto3
+
+# ensure awscli is installed
+try:
+    o = subprocess.check_output(['aws', '--version'], text = True)
+    print('You are using AWSCLI ' + o)
+    print('=======\n')
+except:
+    print('awscli not found, please install: https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html')
+
+
+CWD = os.getcwd()
+APP_DIRECTORY = './motomoto'
+UI_DIRECTORY = './ClientApp'
+S3_UI_BUCKET = 'motomoto-ui'
+S3_SERVICE_BUCKET = 'motomoto-app'
+
+async def build_service():
+    os.chdir(APP_DIRECTORY)
+
+    proc = await asyncio.create_subprocess_exec(
+        'dotnet', 'publish', 
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE)
+
+    stdout, stderr = await proc.communicate()
+
+    # print(proc.returncode)
+
+    print(stdout.decode())
+    print(stderr.decode())
+    print('=======\n')
+
+async def s3_sync(source, destination):
+    """from ./motomoto/ClientApp"""
+    proc = await asyncio.create_subprocess_exec(
+        'aws', 's3', 'sync', source, destination, #'--dryrun',
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE)
+
+    stdout, stderr = await proc.communicate()
+
+    # print(proc.returncode)
+
+    print(stdout.decode())
+    print(stderr.decode())
+    print('=======\n')
+
+
+
+asyncio.run(build_service())
+# cd TheNewPanelists/src/TheNewPanelists
+# dotnet lambda deploy-function 
+# asyncio.run(build_ui())
+# asyncio.run(s3_sync('./build', f"s3://{S3_UI_BUCKET}"))
+# asyncio.run(s3_sync('./build', f"s3://{S3_UI_BUCKET}"))
+
+# dotnet lambda invoke-function TheNewPanelists --payload "Just Checking If Everything is OK" # "JUST CHECKING IF EVERYTHING IS OK" 
+
+
+# Let's use Amazon S3
+# s3 = boto3.resource('s3')
+
+# Print out bucket names
+# for bucket in s3.buckets.all():
+#     print(bucket.name)
+
+# sync_command = f"aws s3 sync ./build s3://{S3_UI_BUCKET}/ --dryrun"
+# os.system(sync_command)
+# p = subprocess.Popen(['aws', 's3', 'sync', './build', f"s3://{S3_UI_BUCKET}", "--dryrun"], stdout=subprocess.PIPE)
+# out = p.stdout.read()
+# print(out)
+
+
+# S3 bucket for lambda
+# API Gateway for lambda
+# S3 bucket for UI
